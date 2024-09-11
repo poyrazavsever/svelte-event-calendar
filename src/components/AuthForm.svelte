@@ -1,41 +1,34 @@
 <script>
-  import { auth } from "../firebase";
-  let email = "";
-  let password = "";
-  let error = "";
-
-  async function handleSubmit(event) {
-    event.preventDefault();
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-      // Kullanıcı başarılı bir şekilde giriş yaptı.
-    } catch (e) {
-      error = e.message;
+    import { auth } from '../firebase';
+    import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+    let email = '';
+    let password = '';
+    let error = '';
+    let isSignUp = false; // Kayıt ve giriş arasında geçiş
+  
+    async function handleSubmit(event) {
+      event.preventDefault();
+      try {
+        if (isSignUp) {
+          await createUserWithEmailAndPassword(auth, email, password);
+          // Başarı durumunda yönlendirme veya başka işlemler yapılabilir
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+          // Başarı durumunda yönlendirme veya başka işlemler yapılabilir
+        }
+      } catch (e) {
+        error = e.message;
+      }
     }
-  }
-
-  async function handleSignUp(event) {
-    event.preventDefault();
-    try {
-      await auth.createUserWithEmailAndPassword(email, password);
-      // Kullanıcı başarılı bir şekilde kaydoldu.
-    } catch (e) {
-      error = e.message;
-    }
-  }
-</script>
-
-<form on:submit|preventDefault={handleSubmit}>
-  <input type="email" placeholder="Email" bind:value={email} required />
-  <input
-    type="password"
-    placeholder="Password"
-    bind:value={password}
-    required
-  />
-  <button type="submit">Giriş Yap</button>
-  <button type="button" on:click={handleSignUp}>Kaydol</button>
-  {#if error}
+  </script>
+  
+  <form on:submit|preventDefault={handleSubmit}>
+    <input type="email" placeholder="Email" bind:value={email} required />
+    <input type="password" placeholder="Password" bind:value={password} required />
+    <button type="submit">{isSignUp ? 'Kaydol' : 'Giriş Yap'}</button>
     <p>{error}</p>
-  {/if}
-</form>
+    <button type="button" on:click={() => isSignUp = !isSignUp}>
+      {isSignUp ? 'Giriş Yap' : 'Kaydol'}
+    </button>
+  </form>
+  
