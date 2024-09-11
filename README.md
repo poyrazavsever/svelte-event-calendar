@@ -11,8 +11,7 @@ Svelte Event Calendar, etkinliklerinizi yönetmek için basit ve modern bir web 
 - Modern ve duyarlı tasarım için Tailwind CSS kullanımı.
 - Firebase Realtime Database veya Firestore ile veri depolama.
 
-## Kurulum
-
-1. Bu repository'yi klonlayın:
-   ```bash
-   git clone https://github.com/username/svelte-event-calendar.git
+## Kullanım
+- Etkinlik Ekleme: Etkinlik formunu kullanarak yeni etkinlikler ekleyebilirsiniz.
+- Etkinlik Görüntüleme: Eklenen etkinlikler takvim görünümünde veya liste şeklinde gösterilir.
+- Etkinlik Düzenleme ve Silme: Mevcut etkinlikleri düzenleyebilir veya silebilirsiniz.
