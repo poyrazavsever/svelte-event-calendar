@@ -1,6 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAY6rLx-8bLB19sbwGFHR9PPHl8NiouoAs",
@@ -12,9 +12,9 @@ const firebaseConfig = {
   measurementId: "G-7GBB108JQ6",
 };
 
-firebase.initializeApp(firebaseConfig);
+// Firebase uygulamasını başlat
+const app = initializeApp(firebaseConfig);
 
-const auth = firebase.auth();
-const firestore = firebase.firestore();
-
-export { auth, firestore };
+// Auth ve Firestore hizmetlerini al
+export const auth = getAuth(app);
+export const firestore = getFirestore(app);
