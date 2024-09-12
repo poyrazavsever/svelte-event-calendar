@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import db from '@/lib/couchdb';
 import { User } from '@/types/user';
+import { hashPassword } from '@/lib/auth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
@@ -15,6 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Yeni kullanıcı ekle
     const user: User = req.body;
     try {
+      // Şifreyi hashle
+      const hashedPassword = await hashPassword(user.password);
+      user.password = hashedPassword;
+
       const response = await db.insert(user);
       res.status(201).json(response);
     } catch (error) {
@@ -28,6 +33,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return;
     }
     try {
+      // Şifre varsa hashle
+      if (user.password) {
+        const hashedPassword = await hashPassword(user.password);
+        user.password = hashedPassword;
+      }
+
       const response = await db.insert(user);
       res.status(200).json(response);
     } catch (error) {
